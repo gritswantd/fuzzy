@@ -25,22 +25,24 @@ describe 'calculate_hash function' do
   end
 
   it 'fails on one out of 10000' do
-      pass = ""
-      trial_count = 1000
+      string = ""
+      trial_count = 1000000
       collision_count = 0
       trial_length = 5
+
       trial_count.times do |n|
-        pass = trial_length.times.map do |m|
+        string = trial_length.times.map do |m|
           [rand(1000)].pack 'c'
         end.join
 
         begin
-          calculate_hash pass
+          calculate_hash string
         rescue
-          puts "Failed password: #{pass.inspect}"
+          puts "Failed password: #{string.inspect}"
           collision_count += 1
         end
       end
       puts "Collision rate: #{collision_count.to_f / (trial_count * trial_length).to_f}"
+      assert collision_count > 0
   end
 end
